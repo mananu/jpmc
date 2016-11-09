@@ -1,0 +1,152 @@
+<head>
+<script type="text/javascript" src="Calculator.js"></script>
+<script type="text/javascript" src="ScientificCalculator.js"></script>
+<script type="text/javascript">
+	var withExponents = function(){
+		this.pow = function(num1, num2){
+			return Math.pow(num1, num2); 
+		}
+		this.multiplyExp = function(pair1, pair2){
+			return(this.multiply(this.pow(pair1[0], pair1[1]),this.pow(pair2[0],pair2[1]))); 
+		}
+		this.divideExp = function(pair1, pair2){
+			return(this.divide(this.pow(pair1[0], pair1[1]),this.pow(pair2[0],pair2[1]))); 
+		}
+	}
+	
+	function delay(dur, ins, funct, params){
+		//returns a promise
+		return new Promise(
+			function(resolve, reject){
+				//delays execution
+				window.setTimeout(
+                function() {
+					//var tmpFunc = new Function(ins.constructor.name + "." + funct);
+					//resolve(window[ins.constructor.name][funct](1,2)); 
+					if (funct == 'add'){
+						resolve(ins.add(params[0],params[1]));
+					}
+					else if (funct == 'subtract'){
+						resolve(ins.subtract(params[0],params[1]));
+					}
+					else{
+						reject(new Error("cannot execute functions that do not exist")); 
+					}
+                }, dur);
+			}
+		); 
+	}
+	
+	var cal = new ScientificCalculator(); 
+	
+	function add(){
+		var num1 = parseFloat(document.getElementById("num1").value); 
+		var num2 = parseFloat(document.getElementById("num2").value); 
+		alert(cal.add(num1, num2)); 
+	}	
+	
+	function substract(){
+		var num1 = parseFloat(document.getElementById("num1").value); 
+		var num2 = parseFloat(document.getElementById("num2").value); 
+		alert(cal.subtract(num1, num2)); 
+	}
+	
+	function multiply(){
+		var num1 = parseFloat(document.getElementById("num1").value); 
+		var num2 = parseFloat(document.getElementById("num2").value); 
+		alert(cal.multiply(num1, num2)); 
+	}
+	
+	function divide(){
+		var num1 = parseFloat(document.getElementById("num1").value); 
+		var num2 = parseFloat(document.getElementById("num2").value); 
+		alert(cal.divide(num1, num2)); 
+	}
+	
+	function sin(){
+		var num1 = parseFloat(document.getElementById("num1").value); 
+		alert(cal.sin(num1)); 
+	}
+	
+	function cos(){
+		var num1 = parseFloat(document.getElementById("num1").value); 
+		alert(cal.cos(num1)); 
+	}
+	
+	function tan(){
+		var num1 = parseFloat(document.getElementById("num1").value); 
+		alert(cal.tan(num1)); 
+	}
+	
+	function log(){
+		var num1 = parseFloat(document.getElementById("num1").value); 
+		alert(cal.log(num1, num2)); 
+	}
+	
+	function pow(){
+		var num1 = parseFloat(document.getElementById("num1").value); 
+		var num2 = parseFloat(document.getElementById("num2").value); 
+		withExponents.call(cal); 
+		alert(cal.pow(num1,num2)); 
+	}
+	
+	function callPromise(){
+		var num1 = parseFloat(document.getElementById("num1").value); 
+		var num2 = parseFloat(document.getElementById("num2").value); 
+		
+		var p = delay(2000,cal,'add',[num1,num2]); 
+		p.then(function(val){
+			alert(val); 
+		}); 
+	}
+	
+	function multiplyExp(){
+		var e1n1 = parseFloat(document.getElementById("e1n1").value); 
+		var e1n2 = parseFloat(document.getElementById("e1n2").value); 
+		var e2n1 = parseFloat(document.getElementById("e2n1").value); 
+		var e2n2 = parseFloat(document.getElementById("e2n2").value); 
+		withExponents.call(cal); 
+		alert(cal.multiplyExp([e1n1,e1n2],[e2n1,e2n2]));
+	}
+	
+	function divideExp(){
+		var e1n1 = parseFloat(document.getElementById("e1n1").value); 
+		var e1n2 = parseFloat(document.getElementById("e1n2").value); 
+		var e2n1 = parseFloat(document.getElementById("e2n1").value); 
+		var e2n2 = parseFloat(document.getElementById("e2n2").value); 
+		withExponents.call(cal); 
+		alert(cal.divideExp([e1n1,e1n2],[e2n1,e2n2]));
+	}
+</script>
+<head>
+<title>JS Exercise</title>
+</head>
+<body>
+	<form>
+		Number 1:<br>
+		<input type="number" name="num1" id="num1"><br>
+		Number 2:<br>
+		<input type="number" name="num2" id="num2">
+		<button type="button" onclick="add()">Add</button>
+		<button type="button" onclick="substract()">Substract</button>
+		<button type="button" onclick="multiply()">Multiply</button>
+		<button type="button" onclick="divide()">Divide</button>
+		<button type="button" onclick="sin()">Sine</button>
+		<button type="button" onclick="cos()">Cosine</button>
+		<button type="button" onclick="tan()">Tangent</button>
+		<button type="button" onclick="log()">Logarithm</button>
+		<button type="button" onclick="pow()">Power</button>
+		<button type="button" onclick="callPromise()">Add with delay</button><br><br><hr>
+		Ex 1 Number 1:<br>
+		<input type="number" name="e1n1" id="e1n1"><br>
+		Ex 1 Number 2:<br>
+		<input type="number" name="e1n2" id="e1n2"><br>
+		Ex 2 Number 1:<br>
+		<input type="number" name="e2n1" id="e2n1"><br>
+		Ex 2 Number 2:<br>
+		<input type="number" name="e2n2" id="e2n2">
+		<button type="button" onclick="multiplyExp()">Multiply Exp</button>
+		<button type="button" onclick="divideExp()">Divide Exp</button>
+	</form>
+</body>
+</html>
